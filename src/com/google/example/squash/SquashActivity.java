@@ -25,6 +25,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.appstate.AppStateClient;
 import com.google.android.gms.appstate.OnStateLoadedListener;
 import com.google.example.games.basegameutils.BaseGameActivity;
 import com.google.example.squash.replay.ReplayView;
@@ -171,6 +172,8 @@ public class SquashActivity extends BaseGameActivity
     @Override
     public void onSignInSucceeded() {
         setSigninButtonState();
+
+        getAppStateClient().loadState(this, LAST_SCORE_STATE);
     }
 
     @Override
@@ -183,7 +186,18 @@ public class SquashActivity extends BaseGameActivity
 
     @Override
     public void onStateLoaded(int statusCode, int stateKey, byte[] data) {
-        Log.d("MultiSquash", "onStateLoaded");
+        Log.e("MultiSquash", "onGamesLoaded");
+        if (statusCode == AppStateClient.STATUS_OK) {
+            Log.d("MultiSquash", "loaded: " + data.toString());
+            try {
+                String s = new String(data, "UTF-8");
+                SquashView sv = (SquashView) findViewById(R.id.squashView);
+                sv.mScore = Integer.parseInt(s);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.e("MultiSquash", "failed because: " + statusCode);
+        }
     }
-
 }
