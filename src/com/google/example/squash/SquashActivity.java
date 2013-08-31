@@ -38,12 +38,12 @@ public class SquashActivity extends BaseGameActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.menu_leaderboard:
-            return true;
-        case R.id.menu_reset:
-            return true;
-        case R.id.menu_achievements:
-            return true;
+            case R.id.menu_leaderboard:
+                return true;
+            case R.id.menu_reset:
+                return true;
+            case R.id.menu_achievements:
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
