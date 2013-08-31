@@ -38,6 +38,8 @@ public class SquashActivity extends BaseGameActivity
     public static int REQUEST_ACHIEVEMENTS = 1001;
     public static int REQUEST_LEADERBOARD = 1002;
 
+    public static int LAST_SCORE_STATE = 0;
+
     public SquashActivity() {
         super(CLIENT_GAMES | CLIENT_APPSTATE);
     }
@@ -144,6 +146,9 @@ public class SquashActivity extends BaseGameActivity
             getGamesClient().submitScore(
                     getResources().getString(R.string.leaderboard_bounces),
                     v.mScore);
+
+            String score = String.valueOf(v.mScore);
+            getAppStateClient().updateState(LAST_SCORE_STATE, score.getBytes());
         }
     }
 
