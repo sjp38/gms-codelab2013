@@ -19,6 +19,7 @@ package com.google.example.squash;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -27,6 +28,7 @@ import android.view.View;
 
 import com.google.android.gms.appstate.AppStateClient;
 import com.google.android.gms.appstate.OnStateLoadedListener;
+import com.google.android.gms.plus.PlusShare;
 import com.google.example.games.basegameutils.BaseGameActivity;
 import com.google.example.squash.replay.ReplayView;
 
@@ -44,7 +46,7 @@ public class SquashActivity extends BaseGameActivity
     public static int LAST_SCORE_STATE = 0;
 
     public SquashActivity() {
-        super(CLIENT_GAMES | CLIENT_APPSTATE);
+        super(CLIENT_GAMES | CLIENT_APPSTATE | CLIENT_PLUS);
     }
 
     @Override
@@ -107,6 +109,38 @@ public class SquashActivity extends BaseGameActivity
                         ReplayView rv = (ReplayView) bind
                                 .findViewById(R.id.replayView);
                         rv.setReplaying(!rv.mIsReplaying);
+                    }
+                });
+
+        findViewById(R.id.share_button).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int lastScore = ((SquashView) bind
+                                .findViewById(R.id.squashView)).mScore;
+
+                        // Note that we use "bind" here to get the
+                        // current activity.
+                        PlusShare.Builder builder = new PlusShare.Builder(
+                                bind, getPlusClient());
+                        // Set call-to-action metadata, which includes
+                        // the score to beat!
+                        builder.addCallToAction("PLAY",
+                                Uri.parse("http://goo.gl/Sa7tR"), "/"
+                                + lastScore);
+
+                        // Set the content url (for desktop use).
+                        builder.setContentUrl(Uri
+                                .parse("http://goo.gl/Sa7tR"));
+
+                        // Set the target deep-link ID (for mobile use).
+                        builder.setContentDeepLinkId("/", null, null, null);
+
+                        //Set the share text.
+                        builder.setText("Can you beat my last score of "
+                                + lastScore + "?");
+
+                        startActivityForResult(builder.getIntent(), 0);
                     }
                 });
 
