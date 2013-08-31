@@ -20,14 +20,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.appstate.OnStateLoadedListener;
 import com.google.example.games.basegameutils.BaseGameActivity;
 import com.google.example.squash.replay.ReplayView;
 
-public class SquashActivity extends BaseGameActivity {
+public class SquashActivity extends BaseGameActivity
+        implements OnStateLoadedListener {
 
     // If this is not 0, that app will show a challenge (for lesson 6!)
     public static int challengeScore = 0;
@@ -163,6 +166,19 @@ public class SquashActivity extends BaseGameActivity {
     @Override
     public void onSignInSucceeded() {
         setSigninButtonState();
+    }
+
+    @Override
+    public void onStateConflict(int stateKey, String ver,
+            byte[] localData, byte[] serverData) {
+        // Normally, you'd resolve the conflict and call
+        // mAppStateClient.resolveConflict()
+        Log.d("MultiSquash", "state conflict");
+    }
+
+    @Override
+    public void onStateLoaded(int statusCode, int stateKey, byte[] data) {
+        Log.d("MultiSquash", "onStateLoaded");
     }
 
 }
