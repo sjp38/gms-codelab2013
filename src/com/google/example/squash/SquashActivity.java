@@ -33,6 +33,7 @@ public class SquashActivity extends BaseGameActivity {
     public static int challengeScore = 0;
 
     public static int REQUEST_ACHIEVEMENTS = 1001;
+    public static int REQUEST_LEADERBOARD = 1002;
 
     public SquashActivity() {
     }
@@ -41,6 +42,9 @@ public class SquashActivity extends BaseGameActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_leaderboard:
+                startActivityForResult(getGamesClient().getLeaderboardIntent(
+                        getResources().getString(R.string.leaderboard_bounces)),
+                        REQUEST_LEADERBOARD);
                 return true;
             case R.id.menu_reset:
                 return true;
@@ -132,6 +136,10 @@ public class SquashActivity extends BaseGameActivity {
         if (isSignedIn() && v.mScore > 0) {
             getGamesClient().incrementAchievement(
                     getResources().getString(R.string.achievement_20), v.mScore);
+
+            getGamesClient().submitScore(
+                    getResources().getString(R.string.leaderboard_bounces),
+                    v.mScore);
         }
     }
 
