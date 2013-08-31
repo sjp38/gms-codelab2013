@@ -36,6 +36,7 @@ public class SquashActivity extends BaseGameActivity {
     public static int REQUEST_LEADERBOARD = 1002;
 
     public SquashActivity() {
+        super(CLIENT_GAMES | CLIENT_APPSTATE);
     }
 
     @Override
