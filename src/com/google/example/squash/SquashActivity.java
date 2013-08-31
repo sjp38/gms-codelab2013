@@ -61,20 +61,8 @@ public class SquashActivity extends BaseGameActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(
-                                bind);
-
-                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                    int which) {
-                                dialog.dismiss();
-                            }
-                        };
-
-                        builder.setMessage("Hey, you need to hook this up!")
-                                .setPositiveButton("OK", dialogClickListener)
-                                .show();
+                        // start the asynchronous sign in flow
+                        beginUserInitiatedSignIn();
                     }
                 });
 
