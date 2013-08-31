@@ -24,9 +24,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.example.games.basegameutils.BaseGameActivity;
 import com.google.example.squash.replay.ReplayView;
 
-public class SquashActivity extends Activity {
+public class SquashActivity extends BaseGameActivity {
 
     // If this is not 0, that app will show a challenge (for lesson 6!)
     public static int challengeScore = 0;
@@ -128,6 +129,14 @@ public class SquashActivity extends Activity {
 
     // Called whenever the Squash game stops.
     public void onGameStop(SquashView v) {
+    }
+
+    @Override
+    public void onSignInFailed() {
+    }
+
+    @Override
+    public void onSignInSucceeded() {
     }
 
 }
