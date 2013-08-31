@@ -32,6 +32,8 @@ public class SquashActivity extends BaseGameActivity {
     // If this is not 0, that app will show a challenge (for lesson 6!)
     public static int challengeScore = 0;
 
+    public static int REQUEST_ACHIEVEMENTS = 1001;
+
     public SquashActivity() {
     }
 
@@ -43,6 +45,10 @@ public class SquashActivity extends BaseGameActivity {
             case R.id.menu_reset:
                 return true;
             case R.id.menu_achievements:
+                if (isSignedIn()) {
+                    startActivityForResult(getGamesClient().getAchievementsIntent(),
+                            REQUEST_ACHIEVEMENTS);
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -115,10 +121,18 @@ public class SquashActivity extends BaseGameActivity {
 
     // Called whenever the Squash game starts.
     public void onGameStart(SquashView v) {
+        if (isSignedIn()) {
+            getGamesClient().unlockAchievement(
+                    getResources().getString(R.string.achievement_first));
+        }
     }
 
     // Called whenever the Squash game stops.
     public void onGameStop(SquashView v) {
+        if (isSignedIn() && v.mScore > 0) {
+            getGamesClient().incrementAchievement(
+                    getResources().getString(R.string.achievement_20), v.mScore);
+        }
     }
 
     // Set the login button visible or not
