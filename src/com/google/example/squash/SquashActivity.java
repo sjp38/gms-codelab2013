@@ -30,6 +30,8 @@ import com.google.android.gms.appstate.OnStateLoadedListener;
 import com.google.example.games.basegameutils.BaseGameActivity;
 import com.google.example.squash.replay.ReplayView;
 
+import java.io.UnsupportedEncodingException;
+
 public class SquashActivity extends BaseGameActivity
         implements OnStateLoadedListener {
 
@@ -179,6 +181,20 @@ public class SquashActivity extends BaseGameActivity
     @Override
     public void onStateConflict(int stateKey, String ver,
             byte[] localData, byte[] serverData) {
+        Log.d("MultiSquash", "state conflict");
+        try {
+            int local = Integer.parseInt(new String(localData, "UTF-8"));
+            int server = Integer.parseInt(new String(serverData, "UTF-8"));
+            // select data that has the highest score:
+            getAppStateClient().resolveState(this, stateKey, ver,
+                    local > server ? localData : serverData);
+        } catch (UnsupportedEncodingException ex) {
+            Log.w("SquashActivity", "*** Error resolving conflict! (unsupported encoding)");
+            ex.printStackTrace();
+        } catch (NumberFormatException ex) {
+            Log.w("SquashActivity", "*** Error resolving conflict! (parse error)");
+            ex.printStackTrace();
+        }
         // Normally, you'd resolve the conflict and call
         // mAppStateClient.resolveConflict()
         Log.d("MultiSquash", "state conflict");
