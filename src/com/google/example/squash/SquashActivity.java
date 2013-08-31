@@ -160,9 +160,11 @@ public class SquashActivity extends BaseGameActivity
         if (isSignedIn()) {
             findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+            findViewById(R.id.share_button).setVisibility(View.VISIBLE);
         } else {
             findViewById(R.id.sign_out_button).setVisibility(View.GONE);
             findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.share_button).setVisibility(View.GONE);
         }
     }
 
