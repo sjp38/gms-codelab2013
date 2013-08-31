@@ -71,6 +71,8 @@ public class SquashActivity extends BaseGameActivity {
                     @Override
                     public void onClick(View v) {
                         // This button isn't visible.
+                        signOut();
+                        setSigninButtonState();
                     }
                 });
 
@@ -119,12 +121,25 @@ public class SquashActivity extends BaseGameActivity {
     public void onGameStop(SquashView v) {
     }
 
+    // Set the login button visible or not
+    public void setSigninButtonState() {
+        if (isSignedIn()) {
+            findViewById(R.id.sign_out_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.sign_out_button).setVisibility(View.GONE);
+            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public void onSignInFailed() {
+        setSigninButtonState();
     }
 
     @Override
     public void onSignInSucceeded() {
+        setSigninButtonState();
     }
 
 }
